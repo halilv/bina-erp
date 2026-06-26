@@ -7,14 +7,14 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors({
-  origin: [
+  origin: '*',
     'http://localhost:3001',
     'http://localhost:3002',
     'https://halilv.github.io',
     /\.onrender\.com$/,
     /\.github\.io$/,
   ],
-  credentials: true,
+  credentials: false,
 }));
 
 app.use(express.json());
