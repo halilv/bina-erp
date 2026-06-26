@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bina ERP</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="erp-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-marka">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="9" width="16" height="10" rx="1" fill="white"/>
+          <polygon points="0,10 10,2 20,10" fill="white"/>
+          <rect x="7" y="12" width="6" height="7" rx="0.5" fill="#534AB7"/>
+        </svg>
+      </div>
+      <div><h2>Bina ERP</h2><span>Yönetim</span></div>
+    </div>
+
+    <span class="nav-baslik">Yönetim</span>
+    <a class="nav-item aktif" data-sayfa="daire" onclick="sayfaGit('daire',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      Daireler
+    </a>
+    <a class="nav-item" data-sayfa="bakim" onclick="sayfaGit('bakim',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      Bakım & Arıza
+    </a>
+    <a class="nav-item" data-sayfa="muhasebe" onclick="sayfaGit('muhasebe',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Muhasebe
+    </a>
+
+    <span class="nav-baslik">Finans</span>
+    <a class="nav-item" data-sayfa="aidat" onclick="sayfaGit('aidat',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Aidat Takibi
+    </a>
+    <a class="nav-item" data-sayfa="borc" onclick="sayfaGit('borc',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17,1 21,5 17,9"/><path d="M3 11V9a4 4 0 014-4h14M7,23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+      Borç / Alacak
+    </a>
+
+    <span class="nav-baslik">Varlıklar</span>
+    <a class="nav-item" data-sayfa="demirbas" onclick="sayfaGit('demirbas',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      Demirbaş
+    </a>
+
+    <span class="nav-baslik">Çıktılar</span>
+    <a class="nav-item" data-sayfa="rapor" onclick="sayfaGit('rapor',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Raporlar
+    </a>
+
+    <div class="sidebar-alt">
+      <div class="sidebar-kullanici">
+        <div class="avatar" id="avatar-harf">A</div>
+        <div class="sidebar-kullanici-bilgi">
+          <p id="kullanici-ad">Kullanıcı</p>
+          <span id="kullanici-rol">Yönetici</span>
+        </div>
+      </div>
+      <button class="cikis-btn" onclick="cikisYap()">Çıkış Yap</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <h1 id="sayfa-baslik">Daire / Kat Yönetimi</h1>
+      <div class="topbar-aksiyonlar">
+        <button class="btn btn-birincil" id="ekle-btn" onclick="yeniEkleAc()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span id="ekle-etiket">Yeni Daire</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="icerik">
+
+      <!-- DAİRE SAYFASI -->
+      <div class="sayfa aktif" id="sayfa-daire">
+        <div class="metrikler" id="daire-metrikler"><div class="yukleniyor"><div class="spinner"></div>Yükleniyor...</div></div>
+        <div class="bolum-baslik">Daire Listesi</div>
+        <div class="kart"><div id="daire-tablo">Yükleniyor...</div></div>
+      </div>
+
+      <!-- BAKIM SAYFASI -->
+      <div class="sayfa" id="sayfa-bakim">
+        <div class="metrikler" id="bakim-metrikler"><div class="yukleniyor"><div class="spinner"></div></div></div>
+        <div class="bolum-baslik">Arıza Talepleri</div>
+        <div class="kart"><div id="bakim-tablo">Yükleniyor...</div></div>
+      </div>
+
+      <!-- MUHASEBE SAYFASI -->
+      <div class="sayfa" id="sayfa-muhasebe">
+        <div class="metrikler" id="muhasebe-metrikler"><div class="yukleniyor"><div class="spinner"></div></div></div>
+        <div class="iki-sutun">
+          <div><div class="bolum-baslik">Gider Kalemleri</div><div class="kart" id="muhasebe-gider">Yükleniyor...</div></div>
+          <div><div class="bolum-baslik">Son İşlemler</div><div class="kart"><div id="muhasebe-islemler">Yükleniyor...</div></div></div>
+        </div>
+      </div>
+
+      <!-- AİDAT SAYFASI -->
+      <div class="sayfa" id="sayfa-aidat">
+        <div class="metrikler" id="aidat-metrikler"><div class="yukleniyor"><div class="spinner"></div></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div class="bolum-baslik" style="margin:0">Aidat Durumu</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="month" id="aidat-donem" value="" class="btn" style="padding:6px 10px;font-size:12px" onchange="aidatYukle()">
+          </div>
+        </div>
+        <div class="kart"><div id="aidat-tablo">Yükleniyor...</div></div>
+      </div>
+
+      <!-- BORÇ/ALACAK SAYFASI -->
+      <div class="sayfa" id="sayfa-borc">
+        <div class="metrikler" id="borc-metrikler"><div class="yukleniyor"><div class="spinner"></div></div></div>
+        <div class="iki-sutun">
+          <div><div class="bolum-baslik">Alacaklar</div><div class="kart"><div id="alacak-tablo">...</div></div></div>
+          <div><div class="bolum-baslik">Borçlar</div><div class="kart"><div id="borc-tablo">...</div></div></div>
+        </div>
+      </div>
+
+      <!-- DEMİRBAŞ SAYFASI -->
+      <div class="sayfa" id="sayfa-demirbas">
+        <div class="metrikler" id="demirbas-metrikler"><div class="yukleniyor"><div class="spinner"></div></div></div>
+        <div class="bolum-baslik">Demirbaş Listesi</div>
+        <div class="kart"><div id="demirbas-tablo">Yükleniyor...</div></div>
+      </div>
+
+      <!-- RAPOR SAYFASI -->
+      <div class="sayfa" id="sayfa-rapor">
+        <div class="rapor-grid" id="rapor-icerik">Yükleniyor...</div>
+      </div>
+
+    </div><!-- /icerik -->
+  </main>
+</div><!-- /erp-layout -->
+
+<!-- MODALLER -->
+<div class="modal-arkaplan" id="modal-daire">
+  <div class="modal">
+    <h3>Yeni Daire Ekle</h3>
+    <div class="form-iki">
+      <div class="form-grup"><label>Daire No *</label><input type="text" id="d-no" placeholder="A-101"></div>
+      <div class="form-grup"><label>Blok *</label><input type="text" id="d-blok" placeholder="A Blok"></div>
+    </div>
+    <div class="form-iki">
+      <div class="form-grup"><label>Kat *</label><input type="number" id="d-kat" placeholder="1"></div>
+      <div class="form-grup"><label>Tip *</label>
+        <select id="d-tip"><option>1+1</option><option>2+1</option><option>3+1</option><option>4+1</option></select>
+      </div>
+    </div>
+    <div class="form-iki">
+      <div class="form-grup"><label>Alan (m²)</label><input type="number" id="d-alan" placeholder="85"></div>
+      <div class="form-grup"><label>Durum</label>
+        <select id="d-durum"><option value="bos">Boş</option><option value="dolu">Dolu</option><option value="bakimda">Bakımda</option></select>
+      </div>
+    </div>
+    <div class="form-grup"><label>Aylık Kira (₺)</label><input type="number" id="d-kira" placeholder="18500"></div>
+    <div class="modal-aksiyonlar">
+      <button class="btn" onclick="modalKapat('modal-daire')">İptal</button>
+      <button class="btn btn-birincil" onclick="daireKaydet()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-arkaplan" id="modal-aidat">
+  <div class="modal">
+    <h3>Yeni Aidat Ekle</h3>
+    <div class="form-grup"><label>Daire ID *</label><input type="number" id="a-daire" placeholder="1"></div>
+    <div class="form-grup"><label>Kiracı ID</label><input type="number" id="a-kiraci" placeholder="1"></div>
+    <div class="form-iki">
+      <div class="form-grup"><label>Dönem *</label><input type="month" id="a-donem"></div>
+      <div class="form-grup"><label>Tutar (₺) *</label><input type="number" id="a-tutar" placeholder="2000"></div>
+    </div>
+    <div class="form-grup"><label>Son Ödeme Tarihi</label><input type="date" id="a-son"></div>
+    <div class="modal-aksiyonlar">
+      <button class="btn" onclick="modalKapat('modal-aidat')">İptal</button>
+      <button class="btn btn-birincil" onclick="aidatKaydet()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-arkaplan" id="modal-borc">
+  <div class="modal">
+    <h3>Yeni Borç/Alacak Kaydı</h3>
+    <div class="form-iki">
+      <div class="form-grup"><label>Tip *</label>
+        <select id="ba-tip"><option value="alacak">Alacak</option><option value="borc">Borç</option></select>
+      </div>
+      <div class="form-grup"><label>Kategori</label><input type="text" id="ba-kategori" placeholder="Kira, Tedarikçi..."></div>
+    </div>
+    <div class="form-grup"><label>Karşı Taraf *</label><input type="text" id="ba-taraf" placeholder="Ad / Firma"></div>
+    <div class="form-grup"><label>Açıklama</label><input type="text" id="ba-aciklama" placeholder="Açıklama"></div>
+    <div class="form-iki">
+      <div class="form-grup"><label>Tutar (₺) *</label><input type="number" id="ba-tutar" placeholder="5000"></div>
+      <div class="form-grup"><label>Vade Tarihi</label><input type="date" id="ba-vade"></div>
+    </div>
+    <div class="form-grup"><label>Durum</label>
+      <select id="ba-durum"><option value="bekliyor">Bekliyor</option><option value="odendi">Ödendi</option><option value="vadeli">Vadeli</option><option value="emanet">Emanet</option></select>
+    </div>
+    <div class="modal-aksiyonlar">
+      <button class="btn" onclick="modalKapat('modal-borc')">İptal</button>
+      <button class="btn btn-birincil" onclick="borcKaydet()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-arkaplan" id="modal-demirbas">
+  <div class="modal">
+    <h3>Yeni Demirbaş Ekle</h3>
+    <div class="form-iki">
+      <div class="form-grup"><label>Kod *</label><input type="text" id="dm-kod" placeholder="D-010"></div>
+      <div class="form-grup"><label>Durum</label>
+        <select id="dm-durum"><option value="aktif">Aktif</option><option value="bakimda">Bakımda</option><option value="hurda">Hurda</option></select>
+      </div>
+    </div>
+    <div class="form-grup"><label>Açıklama *</label><input type="text" id="dm-aciklama" placeholder="Demirbaş adı"></div>
+    <div class="form-iki">
+      <div class="form-grup"><label>Konum</label><input type="text" id="dm-konum" placeholder="A Blok, Bodrum..."></div>
+      <div class="form-grup"><label>Marka</label><input type="text" id="dm-marka" placeholder="Marka"></div>
+    </div>
+    <div class="form-iki">
+      <div class="form-grup"><label>Alış Tarihi</label><input type="date" id="dm-tarih"></div>
+      <div class="form-grup"><label>Güncel Değer (₺)</label><input type="number" id="dm-deger" placeholder="50000"></div>
+    </div>
+    <div class="modal-aksiyonlar">
+      <button class="btn" onclick="modalKapat('modal-demirbas')">İptal</button>
+      <button class="btn btn-birincil" onclick="demirbasKaydet()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-arkaplan" id="modal-bakim">
+  <div class="modal">
+    <h3>Yeni Arıza Talebi</h3>
+    <div class="form-grup"><label>Daire ID</label><input type="number" id="bk-daire" placeholder="1"></div>
+    <div class="form-grup"><label>Konu *</label><input type="text" id="bk-konu" placeholder="Arıza konusu"></div>
+    <div class="form-grup"><label>Açıklama</label><textarea id="bk-aciklama" rows="2" placeholder="Detaylı açıklama"></textarea></div>
+    <div class="form-iki">
+      <div class="form-grup"><label>Öncelik</label>
+        <select id="bk-oncelik"><option value="dusuk">Düşük</option><option value="orta" selected>Orta</option><option value="acil">Acil</option></select>
+      </div>
+      <div class="form-grup"><label>Atanan Kişi</label><input type="text" id="bk-atanan" placeholder="Teknisyen adı"></div>
+    </div>
+    <div class="modal-aksiyonlar">
+      <button class="btn" onclick="modalKapat('modal-bakim')">İptal</button>
+      <button class="btn btn-birincil" onclick="bakimKaydet()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/yardimci.js"></script>
+<script src="js/uygulama.js"></script>
+</body>
+</html>
