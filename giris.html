@@ -33,7 +33,7 @@
     <p class="giris-alt">Demo: admin@binaerp.com / admin123</p>
   </div>
   <script>
-    if (localStorage.getItem('token')) window.location.href = '/';
+if (localStorage.getItem('token')) window.location.href = 'index.html';
     document.getElementById('girisForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('girisBtn');
@@ -41,7 +41,7 @@
       const hata = document.getElementById('hata-mesaji');
       hata.style.display = 'none';
       try {
-        const res = await fetch('/api/auth/giris', {
+       const res = await fetch('https://bina-erp-backend.onrender.com/api/auth/giris', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
