@@ -17,6 +17,8 @@ app.use('/api/daireler', require('./routes/daireler'));
 app.use('/api/aidat', require('./routes/aidat'));
 app.use('/api/borc-alacak', require('./routes/borcAlacak'));
 app.use('/api/demirbas', require('./routes/demirbas'));
+app.use('/api/bakim', require('./routes/bakim'));
+app.use('/api/muhasebe', require('./routes/muhasebe'));
 app.use('/api/raporlar', require('./routes/raporlar'));
 
 app.get('*', (req, res) => {

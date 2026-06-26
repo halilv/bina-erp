@@ -48,12 +48,27 @@ router.post('/', auth, async (req, res) => {
 });
 
 router.put('/:id/ode', auth, async (req, res) => {
-  const { odeme_tarihi } = req.body;
+  const { odeme_tarihi, onay } = req.body;
+  const tarih = odeme_tarihi || new Date().toISOString().slice(0,10);
   try {
+    // Aidat kaydını güncelle
     const result = await pool.query(
       `UPDATE aidat_tahakkuklari SET durum='odendi', odeme_tarihi=$1 WHERE id=$2 RETURNING *`,
-      [odeme_tarihi||new Date().toISOString().slice(0,10), req.params.id]);
-    res.json(result.rows[0]);
+      [tarih, req.params.id]);
+    const aidat = result.rows[0];
+
+    // Otomatik veya onaylı muhasebe kaydı oluştur
+    if (onay !== false) {
+      const daire = await pool.query('SELECT daire_no FROM daireler WHERE id=$1', [aidat.daire_id]);
+      const daireNo = daire.rows[0]?.daire_no || '';
+      await pool.query(
+        `INSERT INTO muhasebe_islemleri (tip, kategori, aciklama, tutar, tarih, daire_id)
+         VALUES ('gelir', 'Aidat Geliri', $1, $2, $3, $4)`,
+        [`${daireNo} - ${aidat.donem} dönemi aidat`, aidat.tutar, tarih, aidat.daire_id]
+      );
+    }
+
+    res.json({ ...aidat, muhasebe_olusturuldu: onay !== false });
   } catch (err) { res.status(500).json({ hata: err.message }); }
 });
 
