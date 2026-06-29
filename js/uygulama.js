@@ -9,8 +9,8 @@ if (kullanici.ad_soyad) {
 // ── SAYFA YÖNETİMİ ──
 const sayfaAyarlari = {
   daire:    { baslik: 'Daire / Kat Yönetimi',  etiket: 'Yeni Daire',    modal: 'modal-daire',    yukle: daireyiYukle },
-  bakim:    { baslik: 'Bakım & Arıza Takibi',  etiket: 'Yeni Talep',    modal: 'modal-bakim',    yukle: bakimiYukle },
-  muhasebe: { baslik: 'Muhasebe',              etiket: null,            modal: null,             yukle: muhasebeYukle },
+  bakim:    { baslik: 'Bakim & Ariza Takibi',   etiket: 'Yeni Talep',    modal: 'modal-bakim',    yukle: bakimiYukle },
+  muhasebe: { baslik: 'Muhasebe',              etiket: 'Yeni Islem',    modal: 'modal-muhasebe', yukle: muhasebeYukle },
   aidat:    { baslik: 'Aidat Takibi',          etiket: 'Yeni Aidat',    modal: 'modal-aidat',    yukle: aidatYukle },
   borc:     { baslik: 'Borç / Alacak Takibi', etiket: 'Yeni Kayıt',   modal: 'modal-borc',     yukle: borcYukle },
   demirbas: { baslik: 'Demirbaş Takibi',       etiket: 'Yeni Demirbaş',modal: 'modal-demirbas', yukle: demirbasYukle },
@@ -134,50 +134,9 @@ async function daireKaydet() {
   } catch (e) { bildirimGoster(e.message, 'hata'); }
 }
 
-// ── BAKIM ──
-async function bakimiYukle() {
-  document.getElementById('bakim-metrikler').innerHTML = `
-    <div class="metrik vurgu"><div class="etiket">Açık Talepler</div><div class="deger">12</div></div>
-    <div class="metrik"><div class="etiket">Devam Eden</div><div class="deger">5</div></div>
-    <div class="metrik"><div class="etiket">Tamamlanan</div><div class="deger">38</div><div class="alt">Bu ay</div></div>
-    <div class="metrik"><div class="etiket">Acil</div><div class="deger">2</div></div>`;
-  document.getElementById('bakim-tablo').innerHTML = `
-    <table>
-      <thead><tr><th>No</th><th>Daire</th><th>Konu</th><th>Öncelik</th><th>Durum</th><th>Tarih</th><th>İşlem</th></tr></thead>
-      <tbody>
-        <tr><td>#1042</td><td>A-101</td><td>Su tesisatı</td><td>${rozet('Acil','kirmizi')}</td><td>${rozet('Devam','sari')}</td><td>23 Haz</td><td><button class="btn btn-kucuk" onclick="bakimDuzenle()">✏️</button><button class="btn btn-kucuk" style="color:var(--renk-kirmizi)" onclick="bakimSil()">🗑️</button></td></tr>
-        <tr><td>#1041</td><td>B-201</td><td>Asansör bakımı</td><td>${rozet('Orta','sari')}</td><td>${rozet('Planlandı','mavi')}</td><td>22 Haz</td><td><button class="btn btn-kucuk" onclick="bakimDuzenle()">✏️</button><button class="btn btn-kucuk" style="color:var(--renk-kirmizi)" onclick="bakimSil()">🗑️</button></td></tr>
-        <tr><td>#1040</td><td>C-105</td><td>Elektrik panosu</td><td>${rozet('Acil','kirmizi')}</td><td>${rozet('Devam','sari')}</td><td>21 Haz</td><td><button class="btn btn-kucuk" onclick="bakimDuzenle()">✏️</button><button class="btn btn-kucuk" style="color:var(--renk-kirmizi)" onclick="bakimSil()">🗑️</button></td></tr>
-      </tbody>
-    </table>`;
-}
-function bakimDuzenle() { bildirimGoster('Düzenleme açıldı', 'basari'); }
-function bakimSil() { silOnay('Bu talebi silmek istiyor musunuz?', () => bildirimGoster('Talep silindi', 'basari')); }
-async function bakimKaydet() { bildirimGoster('Talep kaydedildi', 'basari'); modalKapat('modal-bakim'); }
+// ── BAKIM -- (bakim.js dosyasina tasindi)
 
-// ── MUHASEBE ──
-async function muhasebeYukle() {
-  document.getElementById('muhasebe-metrikler').innerHTML = `
-    <div class="metrik vurgu"><div class="etiket">Kira Geliri</div><div class="deger">₺612K</div><div class="alt">Haziran</div></div>
-    <div class="metrik"><div class="etiket">Toplam Gider</div><div class="deger">₺148K</div></div>
-    <div class="metrik"><div class="etiket">Net Gelir</div><div class="deger">₺464K</div></div>
-    <div class="metrik"><div class="etiket">Gecikmiş</div><div class="deger">₺36K</div></div>`;
-  document.getElementById('muhasebe-gider').innerHTML = `
-    <div class="prog-satir"><span style="flex:1">Personel</span><div class="prog-bar"><div class="prog-dolgu" style="width:68%"></div></div><span class="prog-tutar">₺54K</span></div>
-    <div class="prog-satir"><span style="flex:1">Bakım</span><div class="prog-bar"><div class="prog-dolgu" style="width:42%"></div></div><span class="prog-tutar">₺38K</span></div>
-    <div class="prog-satir"><span style="flex:1">Elektrik/Su</span><div class="prog-bar"><div class="prog-dolgu" style="width:28%"></div></div><span class="prog-tutar">₺22K</span></div>
-    <div class="prog-satir"><span style="flex:1">Sigorta</span><div class="prog-bar"><div class="prog-dolgu" style="width:18%"></div></div><span class="prog-tutar">₺18K</span></div>`;
-  document.getElementById('muhasebe-islemler').innerHTML = `
-    <table>
-      <thead><tr><th>Açıklama</th><th>Tür</th><th>Tutar</th></tr></thead>
-      <tbody>
-        <tr><td>A-101 Kira</td><td>${rozet('Gelir','yesil')}</td><td>₺18.500</td></tr>
-        <tr><td>Asansör bakım</td><td>${rozet('Gider','kirmizi')}</td><td>₺8.200</td></tr>
-        <tr><td>B-201 Kira</td><td>${rozet('Gelir','yesil')}</td><td>₺24.000</td></tr>
-        <tr><td>Elektrik</td><td>${rozet('Gider','kirmizi')}</td><td>₺5.400</td></tr>
-      </tbody>
-    </table>`;
-}
+// ── MUHASEBE -- (muhasebe.js dosyasina tasindi)
 
 // ── AİDAT ──
 const buAy = new Date().toISOString().slice(0,7);
@@ -205,7 +164,7 @@ async function aidatYukle() {
             <td>${tarihFormat(a.odeme_tarihi)}</td>
             <td>${rozet(a.durum==='odendi'?'Ödendi':a.durum==='gecikti'?'Gecikti':'Bekliyor', a.durum==='odendi'?'yesil':a.durum==='gecikti'?'kirmizi':'sari')}</td>
             <td style="display:flex;gap:4px">
-              ${a.durum !== 'odendi' ? `<button class="btn btn-kucuk btn-birincil" onclick="aidatOde(${a.id})">✓ Ödendi</button>` : ''}
+              ${a.durum !== 'odendi' ? `<button class="btn btn-kucuk btn-birincil" onclick="aidatOdeOnay(${a.id}, ${a.tutar}, '${a.daire_no}')">✓ Odendi</button>` : ''}
               <button class="btn btn-kucuk" style="color:var(--renk-kirmizi)" onclick="aidatSil(${a.id})">🗑️</button>
             </td>
           </tr>`).join('')}
@@ -439,3 +398,9 @@ function raporYukle() {
 
 // ── İLK YÜKLEME ──
 daireyiYukle();
+
+// ── MUHASEBE AY VARSAYILAN ──
+document.addEventListener('DOMContentLoaded', () => {
+  const muhasebeAy = document.getElementById('muhasebe-ay');
+  if (muhasebeAy) muhasebeAy.value = new Date().toISOString().slice(0,7);
+});

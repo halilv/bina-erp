@@ -94,16 +94,31 @@
       <!-- BAKIM SAYFASI -->
       <div class="sayfa" id="sayfa-bakim">
         <div class="metrikler" id="bakim-metrikler"><div class="yukleniyor"><div class="spinner"></div></div></div>
-        <div class="bolum-baslik">Arıza Talepleri</div>
-        <div class="kart"><div id="bakim-tablo">Yükleniyor...</div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div class="bolum-baslik" style="margin:0">Ariza Talepleri</div>
+          <select class="btn" id="bakim-filtre" onchange="bakimiYukle()" style="padding:6px 10px;font-size:12px">
+            <option value="">Tumu</option>
+            <option value="acik">Acik</option>
+            <option value="devam">Devam Eden</option>
+            <option value="tamamlandi">Tamamlanan</option>
+          </select>
+        </div>
+        <div class="kart"><div id="bakim-tablo">Yukleniyor...</div></div>
       </div>
 
       <!-- MUHASEBE SAYFASI -->
       <div class="sayfa" id="sayfa-muhasebe">
         <div class="metrikler" id="muhasebe-metrikler"><div class="yukleniyor"><div class="spinner"></div></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div class="bolum-baslik" style="margin:0">Gelir / Gider</div>
+          <div style="display:flex;gap:8px">
+            <input type="month" id="muhasebe-ay" class="btn" style="padding:6px 10px;font-size:12px" onchange="muhasebeYukle()">
+            <button class="btn" style="background:#FCEBEB;color:#A32D2D;border-color:#f5c6c6" onclick="hizliGiderAc()">⚡ Hizli Gider</button>
+          </div>
+        </div>
         <div class="iki-sutun">
-          <div><div class="bolum-baslik">Gider Kalemleri</div><div class="kart" id="muhasebe-gider">Yükleniyor...</div></div>
-          <div><div class="bolum-baslik">Son İşlemler</div><div class="kart"><div id="muhasebe-islemler">Yükleniyor...</div></div></div>
+          <div><div class="bolum-baslik">Gider Kalemleri</div><div class="kart" id="muhasebe-gider">Yukleniyor...</div></div>
+          <div><div class="bolum-baslik">Son Islemler</div><div class="kart"><div id="muhasebe-islemler">Yukleniyor...</div></div></div>
         </div>
       </div>
 
@@ -241,24 +256,104 @@
 
 <div class="modal-arkaplan" id="modal-bakim">
   <div class="modal">
-    <h3>Yeni Arıza Talebi</h3>
+    <h3>Yeni Ariza Talebi</h3>
     <div class="form-grup"><label>Daire ID</label><input type="number" id="bk-daire" placeholder="1"></div>
-    <div class="form-grup"><label>Konu *</label><input type="text" id="bk-konu" placeholder="Arıza konusu"></div>
-    <div class="form-grup"><label>Açıklama</label><textarea id="bk-aciklama" rows="2" placeholder="Detaylı açıklama"></textarea></div>
+    <div class="form-grup"><label>Konu *</label><input type="text" id="bk-konu" placeholder="Ariza konusu"></div>
+    <div class="form-grup"><label>Aciklama</label><textarea id="bk-aciklama" rows="2" placeholder="Detayli aciklama"></textarea></div>
     <div class="form-iki">
-      <div class="form-grup"><label>Öncelik</label>
-        <select id="bk-oncelik"><option value="dusuk">Düşük</option><option value="orta" selected>Orta</option><option value="acil">Acil</option></select>
+      <div class="form-grup"><label>Oncelik</label>
+        <select id="bk-oncelik"><option value="dusuk">Dusuk</option><option value="orta" selected>Orta</option><option value="acil">Acil</option></select>
       </div>
-      <div class="form-grup"><label>Atanan Kişi</label><input type="text" id="bk-atanan" placeholder="Teknisyen adı"></div>
+      <div class="form-grup"><label>Durum</label>
+        <select id="bk-durum"><option value="acik">Acik</option><option value="devam">Devam</option><option value="tamamlandi">Tamamlandi</option><option value="iptal">Iptal</option></select>
+      </div>
     </div>
+    <div class="form-grup"><label>Atanan Kisi</label><input type="text" id="bk-atanan" placeholder="Teknisyen adi"></div>
     <div class="modal-aksiyonlar">
-      <button class="btn" onclick="modalKapat('modal-bakim')">İptal</button>
+      <button class="btn" onclick="modalKapat('modal-bakim')">Iptal</button>
       <button class="btn btn-birincil" onclick="bakimKaydet()">Kaydet</button>
     </div>
   </div>
 </div>
 
+<div class="modal-arkaplan" id="modal-muhasebe">
+  <div class="modal">
+    <h3>Yeni Islem</h3>
+    <div class="form-iki">
+      <div class="form-grup"><label>Tur *</label>
+        <select id="mh-tip"><option value="gelir">Gelir</option><option value="gider">Gider</option></select>
+      </div>
+      <div class="form-grup"><label>Kategori *</label>
+        <select id="mh-kategori">
+          <option>Kira Geliri</option><option>Aidat Geliri</option><option>Diger Gelir</option>
+          <option>Personel</option><option>Bakim</option><option>Elektrik/Su</option>
+          <option>Sigorta</option><option>Temizlik</option><option>Diger Gider</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-grup"><label>Aciklama *</label><input type="text" id="mh-aciklama" placeholder="Islem aciklamasi"></div>
+    <div class="form-iki">
+      <div class="form-grup"><label>Tutar (TL) *</label><input type="number" id="mh-tutar" placeholder="10000"></div>
+      <div class="form-grup"><label>Tarih</label><input type="date" id="mh-tarih"></div>
+    </div>
+    <div class="form-grup"><label>Belge No</label><input type="text" id="mh-belge" placeholder="Fatura/Makbuz no"></div>
+    <div class="modal-aksiyonlar">
+      <button class="btn" onclick="modalKapat('modal-muhasebe')">Iptal</button>
+      <button class="btn btn-birincil" onclick="muhasebeKaydet()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
 <script src="js/yardimci.js"></script>
+<script src="js/bakim.js"></script>
+<script src="js/gider.js"></script>
+<script src="js/muhasebe.js"></script>
 <script src="js/uygulama.js"></script>
+
+<!-- HIZLI GİDER MODALİ -->
+<div class="modal-arkaplan" id="modal-hizli-gider">
+  <div class="modal">
+    <h3>Hizli Gider Ekle</h3>
+    <div class="form-grup"><label>Kategori</label>
+      <select id="hg-kategori">
+        <option>Bakim</option>
+        <option>Elektrik/Su</option>
+        <option>Personel</option>
+        <option>Sigorta</option>
+        <option>Temizlik</option>
+        <option>Diger Gider</option>
+      </select>
+    </div>
+    <div class="form-grup"><label>Aciklama *</label>
+      <input type="text" id="hg-aciklama" placeholder="Gider aciklamasi">
+    </div>
+    <div class="form-iki">
+      <div class="form-grup"><label>Tutar (TL) *</label>
+        <input type="number" id="hg-tutar" placeholder="5000">
+      </div>
+      <div class="form-grup"><label>Tarih</label>
+        <input type="date" id="hg-tarih">
+      </div>
+    </div>
+    <div class="modal-aksiyonlar">
+      <button class="btn" onclick="modalKapat('modal-hizli-gider')">Iptal</button>
+      <button class="btn btn-birincil" onclick="hizliGiderKaydet()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- AİDAT ONAY MODALİ -->
+<div class="modal-arkaplan" id="modal-aidat-onay">
+  <div class="modal">
+    <h3>Odeme Onay</h3>
+    <p style="font-size:13px;color:var(--renk-yazi-ikincil);margin-bottom:16px" id="aidat-onay-bilgi"></p>
+    <p style="font-size:13px;color:var(--renk-yazi);margin-bottom:20px">Bu odeme muhasebe kayitlarina otomatik olarak yansitilsin mi?</p>
+    <div class="modal-aksiyonlar">
+      <button class="btn" onclick="aidatOdeOnayla(false)">Sadece Odet</button>
+      <button class="btn btn-birincil" onclick="aidatOdeOnayla(true)">Odet ve Muhasebeye Yansit</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
